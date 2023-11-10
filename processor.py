@@ -31,8 +31,8 @@ def get_filenames_of_path(path: pathlib.Path, ext: str = "*"):
 
 
 # input and target files
-inputs = get_filenames_of_path(root / "Input")[:1]
-targets = get_filenames_of_path(root / "Target")[:1]
+inputs = get_filenames_of_path(root / "Input")[:4]
+targets = get_filenames_of_path(root / "Target")[:4]
 
 # training transformations and augmentations
 transforms_training = ComposeDouble(
@@ -87,36 +87,33 @@ random_seed = 42
 # split dataset into training set and validation set
 train_size = 0.8  # 80:20 split
 
-# inputs_train, inputs_valid = train_test_split(
-#     inputs, random_state=random_seed, train_size=train_size, shuffle=True
-# )
+inputs_train, inputs_valid = train_test_split(
+    inputs, random_state=random_seed, train_size=train_size, shuffle=True
+)
 
-# targets_train, targets_valid = train_test_split(
-#     targets, random_state=random_seed, train_size=train_size, shuffle=True
-# )
-
-# inputs_train, inputs_valid = inputs[:80], inputs[80:]
-# targets_train, targets_valid = targets[:80], targets[:80]
+targets_train, targets_valid = train_test_split(
+    targets, random_state=random_seed, train_size=train_size, shuffle=True
+)
 
 # dataset training
-# dataset_train = SegmentationDataSet1(
-#     inputs=inputs_train, targets=targets_train, transform=transforms_training
-# )
+dataset_train = SegmentationDataSet1(
+    inputs=inputs_train, targets=targets_train, transform=transforms_training
+)
 
 dataset_train = SegmentationDataSet1(
-    inputs=inputs, targets=targets, transform=transforms_training
+    inputs=inputs_train, targets=targets_train, transform=transforms_training
 )
 
 # dataset validation
-# dataset_valid = SegmentationDataSet1(
-#     inputs=inputs_valid, targets=targets_valid, transform=transforms_validation
-# )
+dataset_valid = SegmentationDataSet1(
+    inputs=inputs_valid, targets=targets_valid, transform=transforms_validation
+)
 
 # dataloader training
 dataloader_training = DataLoader(dataset=dataset_train, batch_size=2, shuffle=True)
 
 # dataloader validation
-# dataloader_validation = DataLoader(dataset=dataset_valid, batch_size=2, shuffle=True)
+dataloader_validation = DataLoader(dataset=dataset_valid, batch_size=2, shuffle=True)
 
 # device
 device = torch.device("cuda") if torch.cuda.is_available() else torch.device("cpu")

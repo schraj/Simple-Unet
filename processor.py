@@ -31,8 +31,8 @@ def get_filenames_of_path(path: pathlib.Path, ext: str = "*"):
 
 
 # input and target files
-inputs = get_filenames_of_path(root / "Input")[:4]
-targets = get_filenames_of_path(root / "Target")[:4]
+inputs = get_filenames_of_path(root / "Input")
+targets = get_filenames_of_path(root / "Target")
 
 # training transformations and augmentations
 transforms_training = ComposeDouble(
